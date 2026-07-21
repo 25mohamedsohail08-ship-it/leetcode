@@ -1,0 +1,43 @@
+class Solution {
+public:
+    int balancedString(string s) {
+        int n = s.length();
+        int need = n / 4;
+
+        unordered_map<char, int> count;
+
+        for (char c : s) {
+            count[c]++;
+        }
+
+        // Already balanced
+        if (count['Q'] == need && 
+            count['W'] == need && 
+            count['E'] == need && 
+            count['R'] == need) {
+            return 0;
+        }
+
+        int ans = n;
+        int left = 0;
+
+        for (int right = 0; right < n; right++) {
+            count[s[right]]--;
+
+            // Current window can be replaced
+            while (left <= right &&
+                   count['Q'] <= need &&
+                   count['W'] <= need &&
+                   count['E'] <= need &&
+                   count['R'] <= need) {
+
+                ans = min(ans, right - left + 1);
+
+                count[s[left]]++;
+                left++;
+            }
+        }
+
+        return ans;
+    }
+};
